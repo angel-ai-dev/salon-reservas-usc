@@ -4,22 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Reserva USC — Sistema de reservas académicas</title>
-
-  <!-- Tipografías -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&f[]=clash-display@500,600&display=swap" rel="stylesheet">
-
-  <!-- Iconos -->
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-
-  <!-- Estilos -->
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
   <div class="app">
 
-    <!-- ===== SIDEBAR (Vista — navegación y contexto) ===== -->
     <aside>
       <div class="brand">
         <div class="brand-mark" aria-hidden="true">
@@ -56,23 +49,14 @@
 
       <div class="panel-note">
         <h3>Patrón aplicado</h3>
-        <p>
-          MVC como arquitectura general y
-          <strong>Facade</strong> como coordinador interno
-          de la lógica de reservas.
-        </p>
+        <p>MVC como arquitectura general y <strong>Facade</strong> como coordinador interno de la lógica de reservas.</p>
       </div>
     </aside>
 
-    <!-- ===== MAIN (Vista — contenido principal) ===== -->
     <main>
-
-      <!-- Topbar -->
       <div class="topbar">
         <div>
-          <div class="eyebrow">
-            <i data-lucide="sparkles"></i>Sistema académico USC
-          </div>
+          <div class="eyebrow"><i data-lucide="sparkles"></i>Sistema académico USC</div>
           <h2 style="font-family: var(--font-display); font-size: var(--text-xl); line-height: 1.05;">
             Gestión de reservas de salones académicos
           </h2>
@@ -86,16 +70,13 @@
         </button>
       </div>
 
-      <!-- Hero + Stats -->
       <section class="hero fade-in">
         <article class="hero-card">
           <div class="eyebrow"><i data-lucide="shield-check"></i>Arquitectura MVC + Facade</div>
           <h2>El sistema centraliza la lógica de reserva académica</h2>
-          <p>
-            El patrón Facade coordina internamente todas las validaciones:
-            horario permitido, disponibilidad, límite de reservas y propiedad.
-            Desde la vista solo se ejecuta una acción.
-          </p>
+          <p>El patrón Facade coordina internamente todas las validaciones:
+          horario permitido, disponibilidad, límite de reservas y propiedad.
+          Desde la vista solo se ejecuta una acción.</p>
           <div class="hero-actions">
             <button class="btn-primary" id="quickReserve">
               <i data-lucide="rocket"></i>Probar reserva rápida
@@ -125,106 +106,58 @@
         </div>
       </section>
 
-      <!-- Módulos principales -->
       <section class="content-grid">
-
-        <!-- Columna izquierda -->
         <div class="stack">
 
-          <!-- Módulo: Disponibilidad -->
           <article class="module fade-in" id="disponibilidad">
             <div class="module-header">
               <div>
                 <h3>Consultar disponibilidad</h3>
-                <p>Filtra por bloque, fecha y franja. El sistema muestra
-                visualmente qué salones están disponibles u ocupados.</p>
+                <p>Filtra por bloque, fecha y franja. El sistema muestra visualmente qué salones están disponibles u ocupados.</p>
               </div>
               <div class="module-icon"><i data-lucide="search-check"></i></div>
             </div>
             <div class="filters">
-              <div class="field">
-                <label for="filterBlock">Bloque</label>
-                <select id="filterBlock"></select>
-              </div>
-              <div class="field">
-                <label for="filterDate">Fecha</label>
-                <input type="date" id="filterDate" />
-              </div>
-              <div class="field">
-                <label for="filterTime">Horario</label>
-                <select id="filterTime"></select>
-              </div>
-              <div class="field">
-                <label>&nbsp;</label>
-                <button class="btn-primary" id="checkAvailability">
-                  <i data-lucide="filter"></i>Consultar
-                </button>
-              </div>
+              <div class="field"><label for="filterBlock">Bloque</label><select id="filterBlock"></select></div>
+              <div class="field"><label for="filterDate">Fecha</label><input type="date" id="filterDate" /></div>
+              <div class="field"><label for="filterTime">Horario</label><select id="filterTime"></select></div>
+              <div class="field"><label>&nbsp;</label><button class="btn-primary" id="checkAvailability"><i data-lucide="filter"></i>Consultar</button></div>
             </div>
             <div class="availability-grid" id="availabilityGrid"></div>
             <div class="feedback" id="availabilityFeedback"></div>
           </article>
 
-          <!-- Módulo: Crear reserva -->
           <article class="module fade-in" id="reserva">
             <div class="module-header">
               <div>
                 <h3>Crear reserva</h3>
-                <p>La fachada centraliza validaciones: horario permitido,
-                no duplicidad, límite de reservas activas y disponibilidad real.</p>
+                <p>La fachada centraliza validaciones: horario permitido, no duplicidad, límite de reservas activas y disponibilidad real.</p>
               </div>
               <div class="module-icon"><i data-lucide="layers-3"></i></div>
             </div>
             <div class="form-grid">
-              <div class="field">
-                <label for="studentName">Estudiante</label>
-                <input id="studentName" value="Ange" placeholder="Nombre del estudiante" />
-              </div>
-              <div class="field">
-                <label for="studentCode">Código</label>
-                <input id="studentCode" value="20261234" placeholder="Código institucional" />
-              </div>
-              <div class="field">
-                <label for="reserveBlock">Bloque</label>
-                <select id="reserveBlock"></select>
-              </div>
-              <div class="field">
-                <label for="reserveRoom">Salón</label>
-                <select id="reserveRoom"></select>
-              </div>
-              <div class="field">
-                <label for="reserveDate">Fecha</label>
-                <input type="date" id="reserveDate" />
-                <span class="helper">Solo hasta 15 días después de hoy.</span>
-              </div>
-              <div class="field">
-                <label for="reserveTime">Horario</label>
-                <select id="reserveTime"></select>
-              </div>
+              <div class="field"><label for="studentName">Estudiante</label><input id="studentName" value="Angel" placeholder="Nombre del estudiante" /></div>
+              <div class="field"><label for="studentCode">Código</label><input id="studentCode" value="20261234" placeholder="Código institucional" /></div>
+              <div class="field"><label for="reserveBlock">Bloque</label><select id="reserveBlock"></select></div>
+              <div class="field"><label for="reserveRoom">Salón</label><select id="reserveRoom"></select></div>
+              <div class="field"><label for="reserveDate">Fecha</label><input type="date" id="reserveDate" /><span class="helper">Solo hasta 15 días después de hoy.</span></div>
+              <div class="field"><label for="reserveTime">Horario</label><select id="reserveTime"></select></div>
             </div>
             <div class="reservation-preview" id="reservationPreview"></div>
             <div class="inline-actions">
-              <button class="btn-primary" id="createReservation">
-                <i data-lucide="check-check"></i>Confirmar reserva
-              </button>
-              <button class="btn-ghost" id="fillDemo">
-                <i data-lucide="wand-sparkles"></i>Cargar ejemplo
-              </button>
+              <button class="btn-primary" id="createReservation"><i data-lucide="check-check"></i>Confirmar reserva</button>
+              <button class="btn-ghost" id="fillDemo"><i data-lucide="wand-sparkles"></i>Cargar ejemplo</button>
             </div>
             <div class="feedback" id="reservationFeedback"></div>
           </article>
         </div>
 
-        <!-- Columna derecha -->
         <div class="stack">
-
-          <!-- Módulo: Mis reservas -->
           <article class="list-card fade-in" id="mis-reservas">
             <div class="module-header">
               <div>
                 <h3>Cancelar reserva propia</h3>
-                <p>El usuario visualiza sus reservas activas y puede cancelar
-                solo las que le pertenecen.</p>
+                <p>El usuario visualiza sus reservas activas y puede cancelar solo las que le pertenecen.</p>
               </div>
               <div class="module-icon"><i data-lucide="ban"></i></div>
             </div>
@@ -232,51 +165,32 @@
             <div class="feedback" id="cancelFeedback"></div>
           </article>
 
-          <!-- Módulo: Gestión de salones -->
           <article class="table-card fade-in" id="salones">
             <div class="module-header">
               <div>
                 <h3>Gestión básica de salones</h3>
-                <p>Permite mantener operativo el catálogo de espacios
-                académicos con una administración mínima.</p>
+                <p>Permite mantener operativo el catálogo de espacios académicos con una administración mínima.</p>
               </div>
               <div class="module-icon"><i data-lucide="building-2"></i></div>
             </div>
             <table>
-              <thead>
-                <tr>
-                  <th>Salón</th>
-                  <th>Bloque</th>
-                  <th>Capacidad</th>
-                  <th>Estado</th>
-                </tr>
-              </thead>
+              <thead><tr><th>Salón</th><th>Bloque</th><th>Capacidad</th><th>Estado</th></tr></thead>
               <tbody id="roomsTable"></tbody>
             </table>
             <div class="inline-actions">
               <button class="btn-secondary" id="toggleRoom">
-                <i data-lucide="refresh-cw"></i>Alternar estado de A-201
+                <i data-lucide="refresh-cw"></i>Alternar estado de 1-201
               </button>
             </div>
             <div class="feedback" id="roomsFeedback"></div>
           </article>
         </div>
-
       </section>
 
-      <p class="footer-note">
-        Sistema de reservas académicas USC — Arquitectura MVC + Patrón Facade
-      </p>
+      <p class="footer-note">Sistema de reservas académicas USC — Arquitectura MVC + Patrón Facade</p>
     </main>
   </div>
 
-  <!--
-    Orden de carga de scripts (MVC):
-    1. Modelos (sin dependencias)
-    2. Facade (depende de los modelos)
-    3. Controladores (dependen de modelos + facade)
-    4. app.js (bootstrap — conecta todo)
-  -->
   <script src="assets/js/models/Room.js"></script>
   <script src="assets/js/models/Reservation.js"></script>
   <script src="assets/js/facade/ReservationFacade.js"></script>

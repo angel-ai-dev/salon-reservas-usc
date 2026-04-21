@@ -1,18 +1,8 @@
 /**
  * app.js — Bootstrap del sistema de reservas USC
  * Arquitectura: MVC + Patrón Facade (ReservationFacade)
- *
- * Flujo de inicialización:
- * 1. Datos base (salones, reservas de muestra)
- * 2. Configuración de fechas y franjas
- * 3. Init de controllers
- * 4. Render inicial de todas las vistas
- * 5. Binding de eventos de la UI
  */
 
-// ---------------------------------------------------------------------------
-// Configuración global
-// ---------------------------------------------------------------------------
 const today   = new Date();
 const maxDate = new Date();
 maxDate.setDate(today.getDate() + 15);
@@ -24,7 +14,7 @@ const fmtDate = (date) => {
   return `${y}-${m}-${d}`;
 };
 
-const TODAY_STR   = fmtDate(today);
+const TODAY_STR    = fmtDate(today);
 const MAX_DATE_STR = fmtDate(maxDate);
 
 const TIME_SLOTS = [
@@ -35,23 +25,23 @@ const TIME_SLOTS = [
   '16:00 - 18:00',
 ];
 
-const BLOCKS = ['A', 'B', 'C', 'D'];
+const BLOCKS = ['1', '2', '3', '4'];
 
 // ---------------------------------------------------------------------------
 // Datos base
 // ---------------------------------------------------------------------------
 const ROOMS_DATA = [
-  { id: 1, name: 'A-201', block: 'A', capacity: 35, active: true  },
-  { id: 2, name: 'A-204', block: 'A', capacity: 40, active: true  },
-  { id: 3, name: 'B-101', block: 'B', capacity: 28, active: true  },
-  { id: 4, name: 'B-203', block: 'B', capacity: 32, active: true  },
-  { id: 5, name: 'C-105', block: 'C', capacity: 25, active: true  },
-  { id: 6, name: 'Lab-D1', block: 'D', capacity: 20, active: false },
+  { id: 1, name: '1-201', block: '1', capacity: 35, active: true  },
+  { id: 2, name: '1-204', block: '1', capacity: 40, active: true  },
+  { id: 3, name: '2-101', block: '2', capacity: 28, active: true  },
+  { id: 4, name: '2-203', block: '2', capacity: 32, active: true  },
+  { id: 5, name: '3-105', block: '3', capacity: 25, active: true  },
+  { id: 6, name: 'Lab-4', block: '4', capacity: 20, active: false },
 ];
 
 const SAMPLE_RESERVATIONS = [
-  { id: 1, student: 'Ange', code: '20261234', block: 'A', room: 'A-204', date: TODAY_STR,                                                                    time: '09:00 - 11:00' },
-  { id: 2, student: 'Ange', code: '20261234', block: 'B', room: 'B-101', date: fmtDate(new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1)), time: '14:00 - 16:00' },
+  { id: 1, student: 'Angel', code: '20261234', block: '1', room: '1-204', date: TODAY_STR,                                                                    time: '09:00 - 11:00' },
+  { id: 2, student: 'Angel', code: '20261234', block: '2', room: '2-101', date: fmtDate(new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1)), time: '14:00 - 16:00' },
 ];
 
 // ---------------------------------------------------------------------------
@@ -108,16 +98,13 @@ function clearFeedback(el) {
   el.textContent = '';
 }
 
-// ---------------------------------------------------------------------------
-// Actualización de stats del hero
-// ---------------------------------------------------------------------------
 function updateStats() {
   els.statReservations.textContent = ReservationController.count();
   els.statRooms.textContent        = RoomController.getAll().length;
 }
 
 // ---------------------------------------------------------------------------
-// Vista previa de reserva
+// Vista previa
 // ---------------------------------------------------------------------------
 function getFormData() {
   return {
@@ -149,7 +136,7 @@ function updatePreview() {
 // Acciones principales
 // ---------------------------------------------------------------------------
 function renderAvailability() {
-  const block = els.filterBlock.value || 'A';
+  const block = els.filterBlock.value || '1';
   const date  = els.filterDate.value  || TODAY_STR;
   const time  = els.filterTime.value  || TIME_SLOTS[0];
   const count = AvailabilityController.renderGrid(
@@ -205,8 +192,8 @@ function setupSelects() {
   fillSelect(els.filterTime, TIME_SLOTS);
   fillSelect(els.reserveTime, TIME_SLOTS);
 
-  els.filterBlock.value = 'A';
-  els.reserveBlock.value = 'A';
+  els.filterBlock.value  = '1';
+  els.reserveBlock.value = '1';
 
   [els.filterDate, els.reserveDate].forEach(input => {
     input.min   = TODAY_STR;
@@ -214,8 +201,8 @@ function setupSelects() {
     input.value = TODAY_STR;
   });
 
-  RoomController.syncSelect(els.reserveRoom, 'A');
-  els.reserveRoom.value = 'A-201';
+  RoomController.syncSelect(els.reserveRoom, '1');
+  els.reserveRoom.value = '1-201';
   els.reserveTime.value = '07:00 - 09:00';
   updatePreview();
 }
@@ -228,21 +215,21 @@ function bindEvents() {
   document.getElementById('createReservation').addEventListener('click', createReservation);
 
   document.getElementById('toggleRoom').addEventListener('click', () => {
-    const room = RoomController.toggleByName('A-201');
+    const room = RoomController.toggleByName('1-201');
     RoomController.renderTable(els.roomsTable);
     renderAvailability();
     RoomController.syncSelect(els.reserveRoom, els.reserveBlock.value);
     showFeedback(els.roomsFeedback,
       room.active ? 'success' : 'warning',
-      `El salón A-201 ahora está ${room.active ? 'activo' : 'inactivo'}.`
+      `El salón 1-201 ahora está ${room.active ? 'activo' : 'inactivo'}.`
     );
     updateStats();
   });
 
   document.getElementById('fillDemo').addEventListener('click', () => {
-    els.reserveBlock.value = 'C';
-    RoomController.syncSelect(els.reserveRoom, 'C');
-    els.reserveRoom.value = 'C-105';
+    els.reserveBlock.value = '3';
+    RoomController.syncSelect(els.reserveRoom, '3');
+    els.reserveRoom.value = '3-105';
     els.reserveDate.value = fmtDate(new Date(today.getFullYear(), today.getMonth(), today.getDate() + 2));
     els.reserveTime.value = '11:00 - 13:00';
     updatePreview();
@@ -258,7 +245,6 @@ function bindEvents() {
     document.getElementById('disponibilidad').scrollIntoView({ behavior: 'smooth' });
   });
 
-  // Nav lateral
   document.querySelectorAll('.nav button').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
@@ -267,7 +253,6 @@ function bindEvents() {
     });
   });
 
-  // Actualización en tiempo real de la vista previa
   [els.reserveBlock, els.reserveRoom, els.reserveDate, els.reserveTime,
    els.studentName, els.studentCode].forEach(el => {
     el.addEventListener('input',  updatePreview);
@@ -279,7 +264,6 @@ function bindEvents() {
     updatePreview();
   });
 
-  // Toggle de tema
   document.querySelector('[data-theme-toggle]').addEventListener('click', () => {
     const root  = document.documentElement;
     const theme = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
